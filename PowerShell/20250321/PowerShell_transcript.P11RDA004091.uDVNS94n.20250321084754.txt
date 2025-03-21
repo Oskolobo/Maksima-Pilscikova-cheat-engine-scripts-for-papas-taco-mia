@@ -22,3 +22,20 @@ PS C:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas
     return render_template('visualization.html')
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 SyntaxError: 'return' outside function
+PS C:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> & "C:/Program Files/Python311/python.exe" "c:/Users/oozolins13/Desktop/Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia/school project/app.py"
+  File "c:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia\school project\app.py", line 59
+    return render_template('visualization.html')
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: 'return' outside function
+PS C:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> & "C:/Program Files/Python311/python.exe" "c:/Users/oozolins13/Desktop/Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia/school project/app.py"
+
+PS C:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> & "C:/Program Files/Python311/python.exe" "c:/Users/oozolins13/Desktop/Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia/school project/app.py"
+
+PS C:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> & "C:/Program Files/Python311/python.exe" "c:/Users/oozolins13/Desktop/Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia/school project/app.py"
+
+PS C:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(): "The pipeline has been stopped."
+PS C:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> & "C:/Program Files/Python311/python.exe" "c:/Users/oozolins13/Desktop/Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia/school project/app.py"
+
+PS C:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(): "The pipeline has been stopped."
