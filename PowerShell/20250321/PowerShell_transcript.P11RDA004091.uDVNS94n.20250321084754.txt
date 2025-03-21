@@ -1,0 +1,24 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20250321084754
+Username: RI\oozolins13
+RunAs User: RI\oozolins13
+Configuration Name: 
+Machine: P11RDA004091 (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Program Files\Microsoft VS Code\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 11520
+PSVersion: 5.1.22621.4391
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.22621.4391
+BuildVersion: 10.0.22621.4391
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+PS>try { . "c:\Program Files\Microsoft VS Code\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+PS C:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> & "C:/Program Files/Python311/python.exe" "c:/Users/oozolins13/Desktop/Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia/school project/app.py"
+  File "c:\Users\oozolins13\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia\school project\app.py", line 59
+    return render_template('visualization.html')
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: 'return' outside function
