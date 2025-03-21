@@ -4,6 +4,7 @@ from models import DataEntry, db
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import numpy as np
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
@@ -43,14 +44,12 @@ def visualization():
     data = DataEntry.select().dicts()
     df = pd.DataFrame(list(data))
 
-    # Histogram example
-    plt.figure(figsize=(10, 6))
-    df['name'].hist(bins=20, color='blue')
-    plt.title("Histogramma - name")
-    plt.savefig('static/plots/histogram.png')
-    plt.close()
+    x = np.random.normal(170, 10, 250)
+
+    plt.hist(x)
+    plt.show() 
     
-    # Scatter plot example
+    # Scatter plot example-not yet working
     plt.figure(figsize=(10, 6))
     plt.scatter(df['name'], df['age'])
     plt.title("Scatter plot - name vs age")
