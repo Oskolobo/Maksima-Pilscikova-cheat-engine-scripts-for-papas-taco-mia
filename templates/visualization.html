@@ -1,14 +1,15 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Datavizualizācijas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization</title>
 </head>
 <body>
-    <h1>Datavizualizācijas</h1>
-    <h2>Histogramma</h2>
-    <img src="{{ url_for('static', filename='plots/histogram.png') }}" alt="Histogramma">
-    
-    <h2>Scatter Plot</h2>
-    <img src="{{ url_for('static', filename='plots/scatter.png') }}" alt="Scatter Plot">
+    <h1>Age Distribution</h1>
+    <img src="data:image/png;base64,{{ plot_url }}" alt="Age Distribution">
+
+    <h1>Scatter Plot - Name vs Age</h1>
+    <img src="data:image/png;base64,{{ scatter_url }}" alt="Scatter Plot">
 </body>
 </html>
