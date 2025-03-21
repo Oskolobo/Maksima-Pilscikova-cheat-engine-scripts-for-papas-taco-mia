@@ -32,3 +32,7 @@ PS C:\Users\jmiculis4\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-
 
 PS C:\Users\jmiculis4\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> TerminatingError(): "The pipeline has been stopped."
 >> TerminatingError(): "The pipeline has been stopped."
+PS C:\Users\jmiculis4\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> & "C:/Program Files/Python311/python.exe" "c:/Users/jmiculis4/Desktop/Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia/school project/app.py"
+
+PS C:\Users\jmiculis4\Desktop\Maksima-Pilscikova-cheat-engine-scripts-for-papas-taco-mia> TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(): "The pipeline has been stopped."
