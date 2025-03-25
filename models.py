@@ -1,11 +1,11 @@
-from peewee import Model, SqliteDatabase, FloatField, IntegerField
+from peewee import Model, SqliteDatabase, CharField, IntegerField
 
 db = SqliteDatabase('data.db')
 
 class DataEntry(Model):
-    name = FloatField()
+    name = CharField()
     age = IntegerField()
-    country = FloatField()
+    country = CharField()
 
     class Meta:
         database = db

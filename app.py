@@ -31,18 +31,23 @@ def upload():
             file.save(filepath)
             df = pd.read_csv(filepath)
 
-            # Check if the required columns exist
             required_columns = ['name', 'age', 'country']
             if not all(column in df.columns for column in required_columns):
                 return "Error: The CSV file must contain the following columns: name, age, country", 400
 
-            # Insert data into database
             for _, row in df.iterrows():
-                DataEntry.create(
-                    name=row['name'],
-                    age=row['age'],
-                    country=row['country']
-                )
+                exists = DataEntry.select().where(
+                    (DataEntry.name == row['name']) &
+                    (DataEntry.age == row['age']) &
+                    (DataEntry.country == row['country'])
+                ).exists()
+
+                if not exists:
+                    DataEntry.create(
+                        name=row['name'],
+                        age=row['age'],
+                        country=row['country']
+                    )
             return redirect(url_for('visualization'))
     return render_template('upload.html')
 
