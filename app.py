@@ -63,13 +63,30 @@ def process_username(username):
         timeout=5
     )
     response.raise_for_status()
-    games = response.json()
+    
     j["display_country"]=requests.get(
         j["country"],
         headers=DEFAULT_HEADERS,
         timeout=5
     ).json()["name"]
+    games = response.json()
+    print(games)
     return {'profile': j, 'games': games}
+
+@app.route('/menu2/<game_id>')
+def menu2(game_id):
+    game_data = get_game_data(game_id)
+    return render_template('menu2.html', game_data=game_data)
+
+def get_game_data(game_id):
+    base_url = f"https://api.chess.com/pub/game/{game_id}"
+    response = requests.get(
+        base_url,
+        headers=DEFAULT_HEADERS,
+        timeout=5
+    )
+    response.raise_for_status()
+    return response.json()
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Data</title>
+</head>
+<body>
+    <h1>Game Data</h1>
+    <p>Game ID: {{ game_data.url.split('/')[-1] }}</p>
+    <p>White Player: {{ game_data.white.username }}</p>
+    <p>Black Player: {{ game_data.black.username }}</p>
+    <p>Result: {{ game_data.result }}</p>
+    <p>Moves: {{ game_data.pgn }}</p>
+</body>
+</html>
