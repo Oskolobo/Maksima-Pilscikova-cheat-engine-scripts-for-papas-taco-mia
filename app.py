@@ -14,11 +14,11 @@ import base64
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 
-# Ensure the upload directory exists
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 db.connect()
+db.drop_tables([DataEntry])
 db.create_tables([DataEntry], safe=True)
 DEFAULT_HEADERS = {
         'User-Agent': 'ChessDataViewer/1.0 (https://yourdomain.com; contact@email.com)'
@@ -37,7 +37,7 @@ def main1(username):
     return render_template('main1.html', data=data)
 
 def process_username(username):
-    # This should redirect to the page that shows all the data of the username
+    #this should redirect to the page that shows all the data of the username
     print(f"Processing username: {username}")
     base_url = f"https://api.chess.com/pub/player/{username}"
     response = requests.get(
@@ -103,35 +103,32 @@ def visualization():
     data = DataEntry.select().dicts()
     df = pd.DataFrame(list(data))
 
-    # Create a histogram plot with a custom color
+    #histogram
     plt.figure(figsize=(10, 6))
     plt.hist(df['age'], bins=10, edgecolor='black', color='skyblue')
-    plt.title("Age Distribution")
+    plt.title("Age distribution")
     plt.xlabel("Age")
     plt.ylabel("Frequency")
 
-    # Save the plot to a BytesIO object
     img = BytesIO()
     plt.savefig(img, format='png')
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode('utf8')
     plt.close()
 
-    # Create a scatter plot with a custom color
+    #scatter
     plt.figure(figsize=(10, 6))
     plt.scatter(df['name'], df['age'], color='green')
-    plt.title("Scatter Plot - Name vs Age")
+    plt.title("Scatter plot - name and age")
     plt.xlabel("Name")
     plt.ylabel("Age")
 
-    # Save the scatter plot to a BytesIO object
     img_scatter = BytesIO()
     plt.savefig(img_scatter, format='png')
     img_scatter.seek(0)
     scatter_url = base64.b64encode(img_scatter.getvalue()).decode('utf8')
     plt.close()
 
-    # Pass the plot URLs to the template
     return render_template('visualization.html', plot_url=plot_url, scatter_url=scatter_url)
 
 if __name__ == '__main__':

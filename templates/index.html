@@ -1,20 +1,30 @@
 <!doctype html>
 <html>
 <head>
-    <title>Mājas lapa</title>
+    <title>Project web page</title>
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPtyj7kDXxp9mUvG4Dn-9UJFJGvvjeAnG2ww&s" alt="Elchin ist so bald"
         width="1000" 
         height="500" />
 </head>
 <body style="background-color:rgb(255, 232, 174)" >
+<style>
+h1 {
+    font-size: 50px;
+}
+        
+h2 {
+    font-size: 15px;
+}
+</style>
 <body>
     <h1>Chess.com account viewer v1.0.0 alpha</h1>
+    <h2>Created by: Kazimirs Kārlis Brakovskis, Oskars Ozoliņš, Juris Mičulis</h2>
     <form method="POST" action="{{ url_for('index') }}">
         <label for="please input a valid chess.com username">Username:</label>
         <input type="text" id="username" name="username" required>
         <button type="submit">Submit</button>
     </form>
-    <a href="{{ url_for('upload') }}">Augšupielādēt CSV</a><br>
-    <a href="{{ url_for('visualization') }}">Skatīt vizualizācijas</a>
+    <a href="{{ url_for('upload') }}">Upload CSV</a><br>
+    <a href="{{ url_for('visualization') }}">Show Visualizations</a>
 </body>
 </html>
