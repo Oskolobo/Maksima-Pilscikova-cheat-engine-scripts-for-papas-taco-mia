@@ -1,10 +1,15 @@
 <!doctype html>
 <html>
 <head>
-    <title>Mājas lapa</title>
+    <title>chess.com account viewer</title>
 </head>
 <body>
-    <h1>Laipni lūdzam!</h1>
+    <h1>Chess.com account viewer v1.0.0 alpha</h1>
+    <form method="POST" action="{{ url_for('index') }}">
+        <label for="please input a valid chess.com username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <button type="submit">Submit</button>
+    </form>
     <a href="{{ url_for('upload') }}">Augšupielādēt CSV</a><br>
     <a href="{{ url_for('visualization') }}">Skatīt vizualizācijas</a>
 </body>
