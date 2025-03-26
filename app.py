@@ -64,7 +64,11 @@ def process_username(username):
     )
     response.raise_for_status()
     games = response.json()
-    print(games)
+    j["display_country"]=requests.get(
+        j["country"],
+        headers=DEFAULT_HEADERS,
+        timeout=5
+    ).json()["name"]
     return {'profile': j, 'games': games}
 
 @app.route('/upload', methods=['GET', 'POST'])
