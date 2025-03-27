@@ -34,7 +34,7 @@ def index():
 @app.route('/main1/<username>')
 def main1(username):
     data = process_username(username)
-    return render_template('main1.html', data=data)
+    return render_template('main1.html', data=data,plot_url=data["elo_plot"])
 def process_username(username):
     #this should redirect to the page that shows all the data of the username
     print(f"Processing username: {username}")
@@ -79,8 +79,18 @@ def process_username(username):
         if not current_id in game_memory:
             game_memory[current_id]=i
         elo_history.append(current_elo)
-    print(elo_history)
-    return {'profile': j, 'games': games}
+    #min_elo=min(elo_history)
+    #elo_history=[i-min_elo for i in elo_history]
+    plt.figure(figsize=(10, 6))
+    plt.plot([i+1 for i in range(len(elo_history))],elo_history)
+    plt.xlabel("Games Played")
+    plt.ylabel("Elo")
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+    plt.close()
+    return {'profile': j, 'games': games,'elo_plot':plot_url}
 
 @app.route('/menu2/<game_id>')
 def menu2(game_id):
