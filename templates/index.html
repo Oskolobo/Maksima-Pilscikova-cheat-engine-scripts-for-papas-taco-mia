@@ -7,17 +7,23 @@
         height="500" />
 <style>
 .button {
-  background-color: #ebe63c;
-  border: rgb(137, 135, 34);
-  color: white;
-  padding: 15px 32px;
+  background-color: #4b4b4b;
+  border: 3px solid rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  padding: 12px 28px;
   text-align: center;
-  text-decoration: none;
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
+  transition-duration: 0.3s;
   cursor: pointer;
 }
+.button:hover {
+  background-color: #ae1fc4;
+  box-shadow: 0 12px 16px 0 #7d178d,0 17px 50px 0 #7d178d;
+  color: rgb(0, 0, 0);
+}
+
 img {
   display: block;
   margin-left: auto;
@@ -45,10 +51,10 @@ h2 {
     <form method="POST" action="{{ url_for('index') }}">
         <label for="please input a valid chess.com username">Username:</label>
         <input type="text" id="username" name="username" required>
-        <button type="submit">Submit</button>
+        <button type="submit" class="button" style="font-family:Verdana">Submit</button>
     </form>
-    <a href="{{ url_for('upload') }}" class="button">Upload CSV</a><br>
-    <a href="{{ url_for('visualization') }}" class="button">Show Visualizations</a>
+    <a href="{{ url_for('upload') }}" class="button" style="font-family:Verdana">Upload CSV</a><br>
+    <a href="{{ url_for('visualization') }}" class="button" style="font-family:Verdana">Show Visualizations</a>
     </div>
 </body>
 </html>

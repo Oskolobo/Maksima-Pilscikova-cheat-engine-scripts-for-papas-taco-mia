@@ -10,15 +10,15 @@
 </head>
 <body style="background-color:rgb(255, 232, 174)" >
 <body>
-    <h1>User Profile</h1>
-    <p>Username: {{ data.profile.username }}</p>
-    <p>Country: {{ data.profile.display_country }}</p>
+    <h1 style="font-family:Impact, sans-serif;">User Profile</h1>
+    <p style="font-family:Verdana">Username: {{ data.profile.username }}</p>
+    <p style="font-family:Verdana">Country: {{ data.profile.display_country }}</p>
     
-    <p>Last Online: {{ data.profile.display_last_online }}</p>
-    <p>Joined: {{ data.profile.display_joined }}</p>
+    <p style="font-family:Verdana">Last Online: {{ data.profile.display_last_online }}</p>
+    <p style="font-family:Verdana">Joined: {{ data.profile.display_joined }}</p>
 
-    <h2>Games in the past month</h2>
-    <ul>
+    <h2  style="font-family:Verdana">Games in the past month</h2>
+    <ul  style="font-family:Verdana">
         {% for game in data.games.games %}
             <li>
                 {{game.display_time}} - {{ game.white.username }} (White, {{game.white.rating}}, {{game.white.country}}) vs {{ game.black.username }} (Black, {{game.black.rating}}, {{game.black.country}})
