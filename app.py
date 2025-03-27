@@ -25,7 +25,7 @@ def get_player_data(username): #major optimisation for code
         response = requests.get(
             base_url,
             headers=DEFAULT_HEADERS,
-            timeout=5
+            timeout=15
         )
         response.raise_for_status()
         player_memory[username]=response.json()
@@ -36,7 +36,7 @@ def get_country_data(country):
         response = requests.get(
             country,  # Use the country URL directly
             headers=DEFAULT_HEADERS,
-            timeout=5
+            timeout=15
         )
         response.raise_for_status()
         country_memory[country] = response.json()
