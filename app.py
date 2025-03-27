@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
 from peewee import SqliteDatabase
-from models import DataEntry, db
 import requests
 from datetime import datetime
 from time import time
@@ -18,9 +17,9 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 game_memory={}
-db.connect()
-db.drop_tables([DataEntry])
-db.create_tables([DataEntry], safe=True)
+#db.connect()
+#db.drop_tables([DataEntry])
+#db.create_tables([DataEntry], safe=True)
 DEFAULT_HEADERS = {
         'User-Agent': 'ChessDataViewer/1.0 (https://yourdomain.com; contact@email.com)'
     }
@@ -70,12 +69,17 @@ def process_username(username):
         timeout=5
     ).json()["name"]
     games = response.json()
+    elo_history=[]
     for i in games["games"]:
         current_id=i["url"].split("/")[-1]
-        #print(current_id)
+        if username==i["white"]["username"]:
+            current_elo=i["white"]["rating"]
+        else:
+            current_elo=i["black"]["rating"]
         if not current_id in game_memory:
             game_memory[current_id]=i
-        #print()
+        elo_history.append(current_elo)
+    print(elo_history)
     return {'profile': j, 'games': games}
 
 @app.route('/menu2/<game_id>')
@@ -109,27 +113,14 @@ def upload():
             if not all(column in df.columns for column in required_columns):
                 return "Error: The CSV file must contain the following columns: name, age, country", 400
 
-            for _, row in df.iterrows():
-                exists = DataEntry.select().where(
-                    (DataEntry.name == row['name']) &
-                    (DataEntry.age == row['age']) &
-                    (DataEntry.country == row['country'])
-                ).exists()
-
-                if not exists:
-                    DataEntry.create(
-                        name=row['name'],
-                        age=row['age'],
-                        country=row['country']
-                    )
             return redirect(url_for('visualization'))
     return render_template('upload.html')
 
 @app.route('/visualization')
 def visualization():
     print("Rendering visualization.html")
-    data = DataEntry.select().dicts()
-    df = pd.DataFrame(list(data))
+    #data = DataEntry.select().dicts()
+    #df = pd.DataFrame(list(data))
 
     #histogram
     plt.figure(figsize=(10, 6))
