@@ -84,7 +84,8 @@ def process_username(username):
     j["display_country"]=get_country_data(j["country"])["name"]
     games = response.json()
     elo_history=[]
-    racism_data={}
+    racism_data_win={}
+    racism_data_lose={}
     for i in games["games"]:
         current_id=i["url"].split("/")[-1]
         if username==i["white"]["username"]:
@@ -92,11 +93,15 @@ def process_username(username):
             opponent=i["black"]["username"]
             opp_color="black"
             my_color="white"
+            win=i["white"]["result"]=="win"
+            lost=i["black"]["result"]=="win"
         else:
             current_elo=i["black"]["rating"]
             opponent=i["white"]["username"]
             opp_color="white"
             my_color="black"
+            win=i["black"]["result"]=="win"
+            lost=i["white"]["result"]=="win"
         if not current_id in game_memory:
             game_memory[current_id]=i
         elo_history.append(current_elo)
@@ -104,6 +109,16 @@ def process_username(username):
         i[opp_color]["country"]=get_country_data(opponent_json["country"])["name"]
         i[my_color]["country"]=j["display_country"]
         i["display_time"] = datetime.utcfromtimestamp(i["end_time"]).strftime('%Y-%m-%d %H:%M:%S')  # Fix display_time
+        if win:
+            if not i[opp_color]["country"] in racism_data_win:
+                racism_data_win[i[opp_color]["country"]]=0
+            racism_data_win[i[opp_color]["country"]]+=1
+        elif lost:
+            if not i[opp_color]["country"] in racism_data_lose:
+                racism_data_lose[i[opp_color]["country"]]=0
+            racism_data_lose[i[opp_color]["country"]]+=1
+    print(racism_data_lose)
+    print(racism_data_win)
     #min_elo=min(elo_history)
     #elo_history=[i-min_elo for i in elo_history]
     plt.figure(figsize=(10, 6))
