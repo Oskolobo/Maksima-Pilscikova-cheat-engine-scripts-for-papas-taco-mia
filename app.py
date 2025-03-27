@@ -17,6 +17,7 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
+game_memory={}
 db.connect()
 db.drop_tables([DataEntry])
 db.create_tables([DataEntry], safe=True)
@@ -35,7 +36,6 @@ def index():
 def main1(username):
     data = process_username(username)
     return render_template('main1.html', data=data)
-
 def process_username(username):
     #this should redirect to the page that shows all the data of the username
     print(f"Processing username: {username}")
@@ -47,7 +47,7 @@ def process_username(username):
     )
     response.raise_for_status()
     j = response.json()
-    print(j)
+    #print(j)
     last_online = j["last_online"]
     l_o_month = int(last_online / 2_629_743)
     l_o_month_word = str(l_o_month % 12 + 1)
@@ -70,12 +70,19 @@ def process_username(username):
         timeout=5
     ).json()["name"]
     games = response.json()
-    print(games)
+    for i in games["games"]:
+        current_id=i["url"].split("/")[-1]
+        #print(current_id)
+        if not current_id in game_memory:
+            game_memory[current_id]=i
+        #print()
     return {'profile': j, 'games': games}
 
 @app.route('/menu2/<game_id>')
 def menu2(game_id):
-    game_data = get_game_data(game_id)
+    print(f"Fetching data for game ID: {game_id}")
+    game_data = game_memory[game_id]
+    #print(game_data)
     return render_template('menu2.html', game_data=game_data)
 
 def get_game_data(game_id):
