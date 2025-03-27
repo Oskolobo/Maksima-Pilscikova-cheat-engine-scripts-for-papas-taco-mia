@@ -17,6 +17,31 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 game_memory={}
+country_memory={}
+player_memory={}
+def get_player_data(username): #major optimisation for code
+    if not username in player_memory:
+        base_url = f"https://api.chess.com/pub/player/{username}"
+        response = requests.get(
+            base_url,
+            headers=DEFAULT_HEADERS,
+            timeout=5
+        )
+        response.raise_for_status()
+        player_memory[username]=response.json()
+    return player_memory[username]
+
+def get_country_data(country):
+    if not country in country_memory:
+        response = requests.get(
+            country,  # Use the country URL directly
+            headers=DEFAULT_HEADERS,
+            timeout=5
+        )
+        response.raise_for_status()
+        country_memory[country] = response.json()
+    return country_memory[country]
+
 #db.connect()
 #db.drop_tables([DataEntry])
 #db.create_tables([DataEntry], safe=True)
@@ -38,14 +63,7 @@ def main1(username):
 def process_username(username):
     #this should redirect to the page that shows all the data of the username
     print(f"Processing username: {username}")
-    base_url = f"https://api.chess.com/pub/player/{username}"
-    response = requests.get(
-        base_url,
-        headers=DEFAULT_HEADERS,
-        timeout=5
-    )
-    response.raise_for_status()
-    j = response.json()
+    j=get_player_data(username)
     #print(j)
     last_online = j["last_online"]
     l_o_month = int(last_online / 2_629_743)
@@ -63,11 +81,7 @@ def process_username(username):
     )
     response.raise_for_status()
     
-    j["display_country"]=requests.get(
-        j["country"],
-        headers=DEFAULT_HEADERS,
-        timeout=5
-    ).json()["name"]
+    j["display_country"]=get_country_data(j["country"])["name"]
     games = response.json()
     elo_history=[]
     racism_data={}
@@ -86,18 +100,10 @@ def process_username(username):
         if not current_id in game_memory:
             game_memory[current_id]=i
         elo_history.append(current_elo)
-        opponent_json = requests.get(
-        f"https://api.chess.com/pub/player/{opponent}",
-        headers=DEFAULT_HEADERS,
-        timeout=5
-        ).json()
-        i[opp_color]["country"]=requests.get(
-        opponent_json["country"],
-        headers=DEFAULT_HEADERS,
-        timeout=5
-    ).json()["name"]
+        opponent_json = get_player_data(opponent)
+        i[opp_color]["country"]=get_country_data(opponent_json["country"])["name"]
         i[my_color]["country"]=j["display_country"]
-        i["display_time"]=j["display_last_online"]=datetime.utcfromtimestamp(i["end_time"]).strftime('%Y-%m-%d %H:%M:%S')
+        i["display_time"] = datetime.utcfromtimestamp(i["end_time"]).strftime('%Y-%m-%d %H:%M:%S')  # Fix display_time
     #min_elo=min(elo_history)
     #elo_history=[i-min_elo for i in elo_history]
     plt.figure(figsize=(10, 6))
@@ -148,8 +154,11 @@ def upload():
 @app.route('/visualization')
 def visualization():
     print("Rendering visualization.html")
-    #data = DataEntry.select().dicts()
-    #df = pd.DataFrame(list(data))
+    # Define a dummy DataFrame for visualization
+    df = pd.DataFrame({
+        'name': ['Alice', 'Bob', 'Charlie'],
+        'age': [25, 30, 35]
+    })
 
     #histogram
     plt.figure(figsize=(10, 6))
