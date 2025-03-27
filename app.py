@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Response
 from peewee import SqliteDatabase
 import requests
 from datetime import datetime
@@ -7,18 +7,23 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import numpy as np
+import colorsys
 from io import BytesIO
 import base64
+from random import random
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
-
+def hsv_to_hex(h,s,v): #thank you, stack overflow
+    r, g, b = (int(255 * component) for component in colorsys.hsv_to_rgb(h , s , v ))
+    return f"#{r:02x}{g:02x}{b:02x}"
 game_memory={}
 country_memory={}
 player_memory={}
+b_country_memory={}
 def get_player_data(username): #major optimisation for code
     if not username in player_memory:
         base_url = f"https://api.chess.com/pub/player/{username}"
@@ -40,6 +45,8 @@ def get_country_data(country):
         )
         response.raise_for_status()
         country_memory[country] = response.json()
+        b_country_memory[country_memory[country]["name"]]=hsv_to_hex(random(),1,1)
+        #print(b_country_memory[country_memory[country]["name"]])
     return country_memory[country]
 
 #db.connect()
@@ -59,7 +66,7 @@ def index():
 @app.route('/main1/<username>')
 def main1(username):
     data = process_username(username)
-    return render_template('main1.html', data=data,plot_url=data["elo_plot"])
+    return render_template('main1.html', data=data,plot_url=data["elo_plot"],rwplot=data["rwplot"],rlplot=data["rlplot"])
 def process_username(username):
     #this should redirect to the page that shows all the data of the username
     print(f"Processing username: {username}")
@@ -117,8 +124,6 @@ def process_username(username):
             if not i[opp_color]["country"] in racism_data_lose:
                 racism_data_lose[i[opp_color]["country"]]=0
             racism_data_lose[i[opp_color]["country"]]+=1
-    print(racism_data_lose)
-    print(racism_data_win)
     #min_elo=min(elo_history)
     #elo_history=[i-min_elo for i in elo_history]
     plt.figure(figsize=(10, 6))
@@ -130,7 +135,27 @@ def process_username(username):
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode('utf8')
     plt.close()
-    return {'profile': j, 'games': games,'elo_plot':plot_url}
+    
+    #Racism win
+    plt.figure(figsize=(6,6))
+    plt.pie([racism_data_win[i] for i in racism_data_win],labels=[f"{i}:{racism_data_win[i]}" for i in racism_data_win],colors=[b_country_memory[i] for i in racism_data_win],startangle=0)
+    plt.title("Games Won Against Country")
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    r_win_url = base64.b64encode(img.getvalue()).decode('utf8')
+    plt.close()
+
+    #Racism lost
+    plt.figure(figsize=(6,6))
+    plt.pie([racism_data_lose[i] for i in racism_data_lose],labels=[f"{i}:{racism_data_lose[i]}" for i in racism_data_lose],colors=[b_country_memory[i] for i in racism_data_lose],startangle=0)
+    plt.title("Games Lost Against Country")
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    r_lose_url = base64.b64encode(img.getvalue()).decode('utf8')
+    plt.close()
+    return {'profile': j, 'games': games,'elo_plot':plot_url,"rwplot":r_win_url,"rlplot":r_lose_url, 'elo_plot_data': elo_history, 'racism_win_data': racism_data_win, 'racism_lose_data': racism_data_lose}
 
 @app.route('/menu2/<game_id>')
 def menu2(game_id):
@@ -202,6 +227,39 @@ def visualization():
     plt.close()
 
     return render_template('visualization.html', plot_url=plot_url, scatter_url=scatter_url)
+
+@app.route('/download/elo_history/<username>')
+def download_elo_history(username):
+    data = process_username(username)
+    elo_history = data['elo_plot_data']
+    csv_data = "Game,Rating\n" + "\n".join([f"{i+1},{rating}" for i, rating in enumerate(elo_history)])
+    return Response(
+        csv_data,
+        mimetype="text/csv",
+        headers={"Content-Disposition": f"attachment;filename={username}_elo_history.csv"}
+    )
+
+@app.route('/download/racism_win/<username>')
+def download_racism_win(username):
+    data = process_username(username)
+    racism_data_win = data['racism_win_data']
+    csv_data = "Country,Games Won\n" + "\n".join([f"{country},{count}" for country, count in racism_data_win.items()])
+    return Response(
+        csv_data,
+        mimetype="text/csv",
+        headers={"Content-Disposition": f"attachment;filename={username}_racism_win.csv"}
+    )
+
+@app.route('/download/racism_lose/<username>')
+def download_racism_lose(username):
+    data = process_username(username)
+    racism_data_lose = data['racism_lose_data']
+    csv_data = "Country,Games Lost\n" + "\n".join([f"{country},{count}" for country, count in racism_data_lose.items()])
+    return Response(
+        csv_data,
+        mimetype="text/csv",
+        headers={"Content-Disposition": f"attachment;filename={username}_racism_lose.csv"}
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)

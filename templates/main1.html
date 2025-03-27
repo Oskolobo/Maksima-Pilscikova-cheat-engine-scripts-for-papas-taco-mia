@@ -39,8 +39,16 @@ img {
             </li>
         {% endfor %}
     </ul>
+    <h2 style="font-family:Verdana">Download Data</h2>
+    <button onclick="location.href='{{ url_for('download_elo_history', username=data.profile.username) }}'">Download Elo History</button>
+    <button onclick="location.href='{{ url_for('download_racism_win', username=data.profile.username) }}'">Download Games Won Data</button>
+    <button onclick="location.href='{{ url_for('download_racism_lose', username=data.profile.username) }}'">Download Games Lost Data</button>
     </div>
     <img src="data:image/png;base64,{{ plot_url }}" alt="Elo History">
+    <li><img src="data:image/png;base64,{{ rwplot }}" alt="Games Won Against Country">
+        <img src="data:image/png;base64,{{ rlplot }}" alt="Games Lost Against Country"></li>
+    
+    
     </div>
 </body>
 </html>
