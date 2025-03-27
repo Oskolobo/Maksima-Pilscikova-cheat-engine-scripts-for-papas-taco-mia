@@ -51,7 +51,7 @@ h2 {
     <form method="POST" action="{{ url_for('index') }}">
         <label for="please input a valid chess.com username">Username:</label>
         <input type="text" id="username" name="username" required>
-        <button type="submit">Submit</button>
+        <button type="submit" class="button" style="font-family:Verdana">Submit</button>
     </form>
     <a href="{{ url_for('upload') }}" class="button" style="font-family:Verdana">Upload CSV</a><br>
     <a href="{{ url_for('visualization') }}" class="button" style="font-family:Verdana">Show Visualizations</a>
