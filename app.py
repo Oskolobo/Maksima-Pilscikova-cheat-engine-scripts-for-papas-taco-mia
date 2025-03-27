@@ -70,12 +70,16 @@ def process_username(username):
         timeout=5
     ).json()["name"]
     games = response.json()
+    elo_history=[]
     for i in games["games"]:
         current_id=i["url"].split("/")[-1]
-        #print(current_id)
+        if username==i["white"]["username"]:
+            current_elo=i["white"]["elo"]
+        else:
+            current_elo=i["black"]["elo"]
         if not current_id in game_memory:
             game_memory[current_id]=i
-        #print()
+    
     return {'profile': j, 'games': games}
 
 @app.route('/menu2/<game_id>')
@@ -109,19 +113,6 @@ def upload():
             if not all(column in df.columns for column in required_columns):
                 return "Error: The CSV file must contain the following columns: name, age, country", 400
 
-            for _, row in df.iterrows():
-                exists = DataEntry.select().where(
-                    (DataEntry.name == row['name']) &
-                    (DataEntry.age == row['age']) &
-                    (DataEntry.country == row['country'])
-                ).exists()
-
-                if not exists:
-                    DataEntry.create(
-                        name=row['name'],
-                        age=row['age'],
-                        country=row['country']
-                    )
             return redirect(url_for('visualization'))
     return render_template('upload.html')
 
