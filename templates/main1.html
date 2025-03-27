@@ -21,7 +21,7 @@
     <ul>
         {% for game in data.games.games %}
             <li>
-                {{ game.white.username }} (white) vs {{ game.black.username }} (black)
+                {{game.display_time}} - {{ game.white.username }} (White, {{game.white.rating}}, {{game.white.country}}) vs {{ game.black.username }} (Black, {{game.black.rating}}, {{game.black.country}})
                 <button onclick="location.href='{{ url_for('main1', username=game.white.username) }}'">View White Player</button>
                 <button onclick="location.href='{{ url_for('main1', username=game.black.username) }}'">View Black Player</button>
                 <button onclick="location.href='{{ url_for('menu2', game_id=game.url.split('/')[-1]) }}'">View Game Data</button>

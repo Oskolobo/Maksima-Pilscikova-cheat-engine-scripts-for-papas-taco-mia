@@ -70,15 +70,34 @@ def process_username(username):
     ).json()["name"]
     games = response.json()
     elo_history=[]
+    racism_data={}
     for i in games["games"]:
         current_id=i["url"].split("/")[-1]
         if username==i["white"]["username"]:
             current_elo=i["white"]["rating"]
+            opponent=i["black"]["username"]
+            opp_color="black"
+            my_color="white"
         else:
             current_elo=i["black"]["rating"]
+            opponent=i["white"]["username"]
+            opp_color="white"
+            my_color="black"
         if not current_id in game_memory:
             game_memory[current_id]=i
         elo_history.append(current_elo)
+        opponent_json = requests.get(
+        f"https://api.chess.com/pub/player/{opponent}",
+        headers=DEFAULT_HEADERS,
+        timeout=5
+        ).json()
+        i[opp_color]["country"]=requests.get(
+        opponent_json["country"],
+        headers=DEFAULT_HEADERS,
+        timeout=5
+    ).json()["name"]
+        i[my_color]["country"]=j["display_country"]
+        i["display_time"]=j["display_last_online"]=datetime.utcfromtimestamp(i["end_time"]).strftime('%Y-%m-%d %H:%M:%S')
     #min_elo=min(elo_history)
     #elo_history=[i-min_elo for i in elo_history]
     plt.figure(figsize=(10, 6))
