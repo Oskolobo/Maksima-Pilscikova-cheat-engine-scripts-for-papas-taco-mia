@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data</title>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBeNb3mT9z0nWE80rMO_M9poZGw8ffANGIYw&s" alt="Elchin ist sehr bald"
+        width="1000"
+        height="500" />
+<style>
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.center {
+    text-align: center;
+}
+</style>
+</head>
+<body style="background-color:rgb(255, 232, 174)" >
+<body>
+    <div class="center">
+    <h1 style="font-family:Impact, sans-serif;">User Profile</h1>
+    <p style="font-family:Verdana">Username: {{ data.profile.username }}</p>
+    <p style="font-family:Verdana">Country: {{ data.profile.display_country }}</p>
+    
+    <p style="font-family:Verdana">Last Online: {{ data.profile.display_last_online }}</p>
+    <p style="font-family:Verdana">Joined: {{ data.profile.display_joined }}</p>
+
+    <h2  style="font-family:Verdana">Games in the past month</h2>
+    <ul  style="font-family:Verdana">
+        {% for game in data.games.games %}
+            <li>
+                {{game.display_time}} - {{ game.white.username }} (White, {{game.white.rating}}, {{game.white.country}}) vs {{ game.black.username }} (Black, {{game.black.rating}}, {{game.black.country}})
+                <button onclick="location.href='{{ url_for('main1', username=game.white.username) }}'">View White Player</button>
+                <button onclick="location.href='{{ url_for('main1', username=game.black.username) }}'">View Black Player</button>
+                <button onclick="location.href='{{ url_for('menu2', game_id=game.url.split('/')[-1]) }}'">View Game Data</button>
+            </li>
+        {% endfor %}
+    </ul>
+    <h2 style="font-family:Verdana">Download Data</h2>
+    <button onclick="location.href='{{ url_for('download_elo_history', username=data.profile.username) }}'">Download Elo History</button>
+    <button onclick="location.href='{{ url_for('download_racism_win', username=data.profile.username) }}'">Download Games Won Data</button>
+    <button onclick="location.href='{{ url_for('download_racism_lose', username=data.profile.username) }}'">Download Games Lost Data</button>
+    </div>
+    <img src="data:image/png;base64,{{ plot_url }}" alt="Elo History">
+    <li><img src="data:image/png;base64,{{ rwplot }}" alt="Games Won Against Country">
+        <img src="data:image/png;base64,{{ rlplot }}" alt="Games Lost Against Country"></li>
+    
+    
+    </div>
+</body>
+</html>
