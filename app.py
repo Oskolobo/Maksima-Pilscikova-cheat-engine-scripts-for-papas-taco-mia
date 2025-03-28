@@ -120,10 +120,15 @@ def process_username(username):
             if not i[opp_color]["country"] in racism_data_win:
                 racism_data_win[i[opp_color]["country"]]=0
             racism_data_win[i[opp_color]["country"]]+=1
+            i["result"]=f"{i['white']['username']} wins"
+
         elif lost:
             if not i[opp_color]["country"] in racism_data_lose:
                 racism_data_lose[i[opp_color]["country"]]=0
             racism_data_lose[i[opp_color]["country"]]+=1
+            i["result"]=f"{i['black']['username']} wins"
+        else:
+            i["result"]="It's a draw"
     #min_elo=min(elo_history)
     #elo_history=[i-min_elo for i in elo_history]
     plt.figure(figsize=(10, 6))
